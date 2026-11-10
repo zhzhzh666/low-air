@@ -1,0 +1,152 @@
+{
+  "audit": {
+    "rows": 6480,
+    "main_rows": 2160,
+    "unique_simulations": 2700,
+    "seeds_per_main_cell": 30,
+    "required_metrics_finite": true,
+    "paired_orders_and_weather": true,
+    "query_budget_respected": true,
+    "incomplete_design_rows": 3,
+    "incomplete_unique_episodes": 3
+  },
+  "focus_n8_b4": [
+    {
+      "policy": "entropy_query",
+      "total_cost": 56.25170128078487,
+      "completion_time_min": 72.5297932519501,
+      "query_count": 4.0,
+      "drone_sortie_count": 0.03333333333333333,
+      "incident_count": 0.0,
+      "infeasible_flag": 0.0
+    },
+    {
+      "policy": "oracle",
+      "total_cost": 42.89360111342636,
+      "completion_time_min": 64.61461323842025,
+      "query_count": 0.0,
+      "drone_sortie_count": 2.2,
+      "incident_count": 0.0,
+      "infeasible_flag": 0.0
+    },
+    {
+      "policy": "prior",
+      "total_cost": 48.2678502540385,
+      "completion_time_min": 72.5584234178619,
+      "query_count": 0.0,
+      "drone_sortie_count": 0.0,
+      "incident_count": 0.0,
+      "infeasible_flag": 0.0
+    },
+    {
+      "policy": "random_query",
+      "total_cost": 56.2678502540385,
+      "completion_time_min": 72.5584234178619,
+      "query_count": 4.0,
+      "drone_sortie_count": 0.0,
+      "incident_count": 0.0,
+      "infeasible_flag": 0.0
+    },
+    {
+      "policy": "truck_only",
+      "total_cost": 48.479818765899026,
+      "completion_time_min": 72.8125462746664,
+      "query_count": 0.0,
+      "drone_sortie_count": 0.0,
+      "incident_count": 0.0,
+      "infeasible_flag": 0.0
+    },
+    {
+      "policy": "voi_query",
+      "total_cost": 48.40458584335375,
+      "completion_time_min": 72.60970945229785,
+      "query_count": 0.1,
+      "drone_sortie_count": 0.03333333333333333,
+      "incident_count": 0.0,
+      "infeasible_flag": 0.0
+    }
+  ],
+  "effect_b4": [
+    {
+      "experiment": "main",
+      "condition": "n8_b4",
+      "n_customers": 8,
+      "budget": 4,
+      "metric": "total_cost",
+      "policy_a": "voi_query",
+      "policy_b": "prior",
+      "n": 30,
+      "mean_change": 0.1367355893152473,
+      "relative_change": 0.0028328502014403,
+      "ci_low": 0.0,
+      "ci_high": 0.3712552923161752,
+      "bootstrap_seed": 90210,
+      "bootstrap_draws": 2000
+    },
+    {
+      "experiment": "main",
+      "condition": "n15_b4",
+      "n_customers": 15,
+      "budget": 4,
+      "metric": "total_cost",
+      "policy_a": "voi_query",
+      "policy_b": "prior",
+      "n": 30,
+      "mean_change": 1.6191775375873168,
+      "relative_change": 0.0163149481747788,
+      "ci_low": -3.009863674146579,
+      "ci_high": 6.044321166677455,
+      "bootstrap_seed": 90210,
+      "bootstrap_draws": 2000
+    },
+    {
+      "experiment": "main",
+      "condition": "n25_b4",
+      "n_customers": 25,
+      "budget": 4,
+      "metric": "total_cost",
+      "policy_a": "voi_query",
+      "policy_b": "prior",
+      "n": 30,
+      "mean_change": 5.210260170565025,
+      "relative_change": 0.0086484480490429,
+      "ci_low": -20.844899093847115,
+      "ci_high": 33.33440592888091,
+      "bootstrap_seed": 90210,
+      "bootstrap_draws": 2000
+    }
+  ],
+  "heatmap": {
+    "budgets": [
+      0,
+      2,
+      4,
+      8
+    ],
+    "delays": [
+      0.0,
+      3.0,
+      8.0
+    ],
+    "values": [
+      [
+        48.2678502540385,
+        48.25494689604224,
+        48.25494689604224,
+        48.25494689604224
+      ],
+      [
+        48.2678502540385,
+        48.40458584335375,
+        48.40458584335375,
+        48.40458584335375
+      ],
+      [
+        48.2678502540385,
+        48.59333461572261,
+        48.59333461572261,
+        48.59333461572261
+      ]
+    ]
+  }
+}

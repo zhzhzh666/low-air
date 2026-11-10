@@ -1,0 +1,5 @@
+case,served,drone_collections,ground_recoveries,battery_swaps,normal_observations,gust_observations,truck_only_observations,distance_rejections,energy_rejections,weather_or_clearance_rejections,truck_km,minutes,energy_Wh,final_Wh,late_minutes
+truck,55,0,0,0,0,0,56,0,0,0,53.4,189.43,0,756,143.77
+normal,55,13,0,0,43,0,0,22,0,4,50.42,172.79,375.12,380.88,1.77
+gust,55,12,0,0,38,6,0,23,0,3,50.75,174.8,379.95,376.05,1.77
+gust_milp,55,13,0,0,37,6,0,19,0,4,49.57,170.21,380.73,375.27,1.77

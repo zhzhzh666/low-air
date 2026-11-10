@@ -1,0 +1,43 @@
+{
+  "milestone": "M1 deterministic",
+  "truck_route": [
+    0,
+    2,
+    1,
+    9,
+    4,
+    12,
+    6,
+    10,
+    8,
+    5,
+    13
+  ],
+  "sorties": [
+    {
+      "launch": 9,
+      "customer": 11,
+      "recover": 12
+    },
+    {
+      "launch": 6,
+      "customer": 7,
+      "recover": 13
+    },
+    {
+      "launch": 0,
+      "customer": 3,
+      "recover": 1
+    }
+  ],
+  "cost": 58.448541636831635,
+  "completion_min": 89.79074414789304,
+  "moves": {
+    "relocate": 0,
+    "swap": 0,
+    "2opt": 0,
+    "truck_to_drone": 3,
+    "drone_to_truck": 0,
+    "anchors": 4
+  }
+}

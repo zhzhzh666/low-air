@@ -1,0 +1,7 @@
+﻿policy,scenarios,mean_completion_time_min,p95_completion_time_min,mean_total_cost,mean_drone_share,mean_queries,mean_failures,failure_rate
+none,500,174.2,174.2,174.2,0.0,0,0,0.0
+blind_aggressive,500,128.108,163.0,145.076,1.0,0,1.414,0.1767
+random,500,161.95,176.2,161.95,0.211,2.022,0,0.0
+active,500,155.673,170.6,155.673,0.306,3,0,0.0
+all_query,500,157.078,171.0,157.078,0.309,3,0,0.0
+oracle,500,110.61,129.0,110.61,0.823,0,0,0.0

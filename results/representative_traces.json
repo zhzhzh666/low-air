@@ -1,0 +1,572 @@
+{
+  "none": {
+    "weather_and_actions": [
+      {
+        "zone": "A",
+        "weather_real": "calm",
+        "query": false,
+        "posterior_safe": 0.82,
+        "voi_min": 2.304,
+        "action": "truck",
+        "stage_time_min": 20.8,
+        "safe": true
+      },
+      {
+        "zone": "B",
+        "weather_real": "calm",
+        "query": false,
+        "posterior_safe": 0.82,
+        "voi_min": 2.018,
+        "action": "truck",
+        "stage_time_min": 23.0,
+        "safe": true
+      },
+      {
+        "zone": "C",
+        "weather_real": "calm",
+        "query": false,
+        "posterior_safe": 0.82,
+        "voi_min": 2.05,
+        "action": "truck",
+        "stage_time_min": 18.8,
+        "safe": true
+      },
+      {
+        "zone": "D",
+        "weather_real": "calm",
+        "query": false,
+        "posterior_safe": 0.82,
+        "voi_min": 2.333,
+        "action": "truck",
+        "stage_time_min": 25.2,
+        "safe": true
+      },
+      {
+        "zone": "E",
+        "weather_real": "moderate",
+        "query": false,
+        "posterior_safe": 0.82,
+        "voi_min": 2.344,
+        "action": "truck",
+        "stage_time_min": 21.6,
+        "safe": true
+      },
+      {
+        "zone": "F",
+        "weather_real": "moderate",
+        "query": false,
+        "posterior_safe": 0.82,
+        "voi_min": 1.782,
+        "action": "truck",
+        "stage_time_min": 19.8,
+        "safe": true
+      },
+      {
+        "zone": "G",
+        "weather_real": "moderate",
+        "query": false,
+        "posterior_safe": 0.82,
+        "voi_min": 2.257,
+        "action": "truck",
+        "stage_time_min": 24.2,
+        "safe": true
+      },
+      {
+        "zone": "H",
+        "weather_real": "calm",
+        "query": false,
+        "posterior_safe": 0.82,
+        "voi_min": 2.106,
+        "action": "truck",
+        "stage_time_min": 20.8,
+        "safe": true
+      }
+    ],
+    "summary": {
+      "policy": "none",
+      "scenarios": 500,
+      "mean_completion_time_min": 174.2,
+      "p95_completion_time_min": 174.2,
+      "mean_total_cost": 174.2,
+      "mean_drone_share": 0.0,
+      "mean_queries": 0,
+      "mean_failures": 0,
+      "failure_rate": 0.0
+    }
+  },
+  "blind_aggressive": {
+    "weather_and_actions": [
+      {
+        "zone": "A",
+        "weather_real": "calm",
+        "query": false,
+        "posterior_safe": 0.82,
+        "voi_min": 2.304,
+        "action": "drone",
+        "stage_time_min": 11.6,
+        "safe": true
+      },
+      {
+        "zone": "B",
+        "weather_real": "calm",
+        "query": false,
+        "posterior_safe": 0.82,
+        "voi_min": 2.018,
+        "action": "drone",
+        "stage_time_min": 12.8,
+        "safe": true
+      },
+      {
+        "zone": "C",
+        "weather_real": "calm",
+        "query": false,
+        "posterior_safe": 0.82,
+        "voi_min": 2.05,
+        "action": "drone",
+        "stage_time_min": 10.2,
+        "safe": true
+      },
+      {
+        "zone": "D",
+        "weather_real": "calm",
+        "query": false,
+        "posterior_safe": 0.82,
+        "voi_min": 2.333,
+        "action": "drone",
+        "stage_time_min": 14.0,
+        "safe": true
+      },
+      {
+        "zone": "E",
+        "weather_real": "moderate",
+        "query": false,
+        "posterior_safe": 0.82,
+        "voi_min": 2.344,
+        "action": "drone",
+        "stage_time_min": 12.0,
+        "safe": true
+      },
+      {
+        "zone": "F",
+        "weather_real": "moderate",
+        "query": false,
+        "posterior_safe": 0.82,
+        "voi_min": 1.782,
+        "action": "drone",
+        "stage_time_min": 11.0,
+        "safe": true
+      },
+      {
+        "zone": "G",
+        "weather_real": "moderate",
+        "query": false,
+        "posterior_safe": 0.82,
+        "voi_min": 2.257,
+        "action": "drone",
+        "stage_time_min": 13.6,
+        "safe": true
+      },
+      {
+        "zone": "H",
+        "weather_real": "calm",
+        "query": false,
+        "posterior_safe": 0.82,
+        "voi_min": 2.106,
+        "action": "drone",
+        "stage_time_min": 11.8,
+        "safe": true
+      }
+    ],
+    "summary": {
+      "policy": "blind_aggressive",
+      "scenarios": 500,
+      "mean_completion_time_min": 128.108,
+      "p95_completion_time_min": 163.0,
+      "mean_total_cost": 145.076,
+      "mean_drone_share": 1.0,
+      "mean_queries": 0,
+      "mean_failures": 1.414,
+      "failure_rate": 0.1767
+    }
+  },
+  "random": {
+    "weather_and_actions": [
+      {
+        "zone": "A",
+        "weather_real": "calm",
+        "query": false,
+        "posterior_safe": 0.82,
+        "voi_min": 2.304,
+        "action": "truck",
+        "stage_time_min": 20.8,
+        "safe": true
+      },
+      {
+        "zone": "B",
+        "weather_real": "calm",
+        "query": false,
+        "posterior_safe": 0.82,
+        "voi_min": 2.018,
+        "action": "truck",
+        "stage_time_min": 23.0,
+        "safe": true
+      },
+      {
+        "zone": "C",
+        "weather_real": "calm",
+        "query": false,
+        "posterior_safe": 0.82,
+        "voi_min": 2.05,
+        "action": "truck",
+        "stage_time_min": 18.8,
+        "safe": true
+      },
+      {
+        "zone": "D",
+        "weather_real": "calm",
+        "query": false,
+        "posterior_safe": 0.82,
+        "voi_min": 2.333,
+        "action": "truck",
+        "stage_time_min": 25.2,
+        "safe": true
+      },
+      {
+        "zone": "E",
+        "weather_real": "moderate",
+        "query": true,
+        "posterior_safe": 1.0,
+        "voi_min": 0.0,
+        "action": "drone",
+        "stage_time_min": 12.0,
+        "safe": true
+      },
+      {
+        "zone": "F",
+        "weather_real": "moderate",
+        "query": true,
+        "posterior_safe": 1.0,
+        "voi_min": 0.0,
+        "action": "drone",
+        "stage_time_min": 11.0,
+        "safe": true
+      },
+      {
+        "zone": "G",
+        "weather_real": "moderate",
+        "query": false,
+        "posterior_safe": 0.82,
+        "voi_min": 2.257,
+        "action": "truck",
+        "stage_time_min": 24.2,
+        "safe": true
+      },
+      {
+        "zone": "H",
+        "weather_real": "calm",
+        "query": false,
+        "posterior_safe": 0.82,
+        "voi_min": 2.106,
+        "action": "truck",
+        "stage_time_min": 20.8,
+        "safe": true
+      }
+    ],
+    "summary": {
+      "policy": "random",
+      "scenarios": 500,
+      "mean_completion_time_min": 161.95,
+      "p95_completion_time_min": 176.2,
+      "mean_total_cost": 161.95,
+      "mean_drone_share": 0.211,
+      "mean_queries": 2.022,
+      "mean_failures": 0,
+      "failure_rate": 0.0
+    }
+  },
+  "active": {
+    "weather_and_actions": [
+      {
+        "zone": "A",
+        "weather_real": "calm",
+        "query": true,
+        "posterior_safe": 1.0,
+        "voi_min": 0.0,
+        "action": "drone",
+        "stage_time_min": 11.6,
+        "safe": true
+      },
+      {
+        "zone": "B",
+        "weather_real": "calm",
+        "query": false,
+        "posterior_safe": 0.82,
+        "voi_min": 2.018,
+        "action": "truck",
+        "stage_time_min": 23.0,
+        "safe": true
+      },
+      {
+        "zone": "C",
+        "weather_real": "calm",
+        "query": false,
+        "posterior_safe": 0.82,
+        "voi_min": 2.05,
+        "action": "truck",
+        "stage_time_min": 18.8,
+        "safe": true
+      },
+      {
+        "zone": "D",
+        "weather_real": "calm",
+        "query": true,
+        "posterior_safe": 1.0,
+        "voi_min": 0.0,
+        "action": "drone",
+        "stage_time_min": 14.0,
+        "safe": true
+      },
+      {
+        "zone": "E",
+        "weather_real": "moderate",
+        "query": true,
+        "posterior_safe": 1.0,
+        "voi_min": 0.0,
+        "action": "drone",
+        "stage_time_min": 12.0,
+        "safe": true
+      },
+      {
+        "zone": "F",
+        "weather_real": "moderate",
+        "query": false,
+        "posterior_safe": 0.82,
+        "voi_min": 1.782,
+        "action": "truck",
+        "stage_time_min": 19.8,
+        "safe": true
+      },
+      {
+        "zone": "G",
+        "weather_real": "moderate",
+        "query": false,
+        "posterior_safe": 0.82,
+        "voi_min": 2.257,
+        "action": "truck",
+        "stage_time_min": 24.2,
+        "safe": true
+      },
+      {
+        "zone": "H",
+        "weather_real": "calm",
+        "query": false,
+        "posterior_safe": 0.82,
+        "voi_min": 2.106,
+        "action": "truck",
+        "stage_time_min": 20.8,
+        "safe": true
+      }
+    ],
+    "summary": {
+      "policy": "active",
+      "scenarios": 500,
+      "mean_completion_time_min": 155.673,
+      "p95_completion_time_min": 170.6,
+      "mean_total_cost": 155.673,
+      "mean_drone_share": 0.306,
+      "mean_queries": 3,
+      "mean_failures": 0,
+      "failure_rate": 0.0
+    }
+  },
+  "all_query": {
+    "weather_and_actions": [
+      {
+        "zone": "A",
+        "weather_real": "calm",
+        "query": true,
+        "posterior_safe": 1.0,
+        "voi_min": 0.0,
+        "action": "drone",
+        "stage_time_min": 11.6,
+        "safe": true
+      },
+      {
+        "zone": "B",
+        "weather_real": "calm",
+        "query": true,
+        "posterior_safe": 1.0,
+        "voi_min": 0.0,
+        "action": "drone",
+        "stage_time_min": 12.8,
+        "safe": true
+      },
+      {
+        "zone": "C",
+        "weather_real": "calm",
+        "query": true,
+        "posterior_safe": 1.0,
+        "voi_min": 0.0,
+        "action": "drone",
+        "stage_time_min": 10.2,
+        "safe": true
+      },
+      {
+        "zone": "D",
+        "weather_real": "calm",
+        "query": true,
+        "posterior_safe": 0.82,
+        "voi_min": 2.333,
+        "action": "truck",
+        "stage_time_min": 25.2,
+        "safe": true
+      },
+      {
+        "zone": "E",
+        "weather_real": "moderate",
+        "query": true,
+        "posterior_safe": 0.82,
+        "voi_min": 2.344,
+        "action": "truck",
+        "stage_time_min": 21.6,
+        "safe": true
+      },
+      {
+        "zone": "F",
+        "weather_real": "moderate",
+        "query": true,
+        "posterior_safe": 0.82,
+        "voi_min": 1.782,
+        "action": "truck",
+        "stage_time_min": 19.8,
+        "safe": true
+      },
+      {
+        "zone": "G",
+        "weather_real": "moderate",
+        "query": true,
+        "posterior_safe": 0.82,
+        "voi_min": 2.257,
+        "action": "truck",
+        "stage_time_min": 24.2,
+        "safe": true
+      },
+      {
+        "zone": "H",
+        "weather_real": "calm",
+        "query": true,
+        "posterior_safe": 0.82,
+        "voi_min": 2.106,
+        "action": "truck",
+        "stage_time_min": 20.8,
+        "safe": true
+      }
+    ],
+    "summary": {
+      "policy": "all_query",
+      "scenarios": 500,
+      "mean_completion_time_min": 157.078,
+      "p95_completion_time_min": 171.0,
+      "mean_total_cost": 157.078,
+      "mean_drone_share": 0.309,
+      "mean_queries": 3,
+      "mean_failures": 0,
+      "failure_rate": 0.0
+    }
+  },
+  "oracle": {
+    "weather_and_actions": [
+      {
+        "zone": "A",
+        "weather_real": "calm",
+        "query": false,
+        "posterior_safe": 1.0,
+        "voi_min": 0.0,
+        "action": "drone",
+        "stage_time_min": 11.6,
+        "safe": true
+      },
+      {
+        "zone": "B",
+        "weather_real": "calm",
+        "query": false,
+        "posterior_safe": 1.0,
+        "voi_min": 0.0,
+        "action": "drone",
+        "stage_time_min": 12.8,
+        "safe": true
+      },
+      {
+        "zone": "C",
+        "weather_real": "calm",
+        "query": false,
+        "posterior_safe": 1.0,
+        "voi_min": 0.0,
+        "action": "drone",
+        "stage_time_min": 10.2,
+        "safe": true
+      },
+      {
+        "zone": "D",
+        "weather_real": "calm",
+        "query": false,
+        "posterior_safe": 1.0,
+        "voi_min": 0.0,
+        "action": "drone",
+        "stage_time_min": 14.0,
+        "safe": true
+      },
+      {
+        "zone": "E",
+        "weather_real": "moderate",
+        "query": false,
+        "posterior_safe": 1.0,
+        "voi_min": 0.0,
+        "action": "drone",
+        "stage_time_min": 12.0,
+        "safe": true
+      },
+      {
+        "zone": "F",
+        "weather_real": "moderate",
+        "query": false,
+        "posterior_safe": 1.0,
+        "voi_min": 0.0,
+        "action": "drone",
+        "stage_time_min": 11.0,
+        "safe": true
+      },
+      {
+        "zone": "G",
+        "weather_real": "moderate",
+        "query": false,
+        "posterior_safe": 1.0,
+        "voi_min": 0.0,
+        "action": "drone",
+        "stage_time_min": 13.6,
+        "safe": true
+      },
+      {
+        "zone": "H",
+        "weather_real": "calm",
+        "query": false,
+        "posterior_safe": 1.0,
+        "voi_min": 0.0,
+        "action": "drone",
+        "stage_time_min": 11.8,
+        "safe": true
+      }
+    ],
+    "summary": {
+      "policy": "oracle",
+      "scenarios": 500,
+      "mean_completion_time_min": 110.61,
+      "p95_completion_time_min": 129.0,
+      "mean_total_cost": 110.61,
+      "mean_drone_share": 0.823,
+      "mean_queries": 0,
+      "mean_failures": 0,
+      "failure_rate": 0.0
+    }
+  }
+}

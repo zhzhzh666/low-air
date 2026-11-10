@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "truck-drone-weather"
+version = "0.1.0"
+description = "Synthetic, nonanticipative truck-drone pickup simulation"
+requires-python = ">=3.10"
+dependencies = ["numpy>=1.23", "pandas>=1.5", "matplotlib>=3.6", "PyYAML>=6"]
+
+[project.optional-dependencies]
+test = ["pytest>=7"]
+
+[tool.setuptools.packages.find]
+include = ["tdw*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="深圳大学粤海校区周边车机协同取件仿真交互回放">
+  <title>粤海车机协同 · 交互仿真</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main>
+    <header class="hero shell">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="pulse"></span> SZU · YUEHAI DIGITAL TWIN</p>
+        <h1>风中协同，<br><em>安全回收。</em></h1>
+        <p class="lead">深圳大学粤海校区周边车机协同取件仿真。卡车每到一个节点重新观测风速与风向，再选择纯卡车、常规风况或强风调度。无人机电量降至 20% 阈值时更换电池。</p>
+      </div>
+      <div class="hero-facts" aria-label="场景规模">
+        <div><strong>4.12 × 3.99</strong><span>平方公里场景</span></div>
+        <div><strong>2,106</strong><span>建筑轮廓</span></div>
+        <div><strong>2,031</strong><span>道路折线</span></div>
+        <div><strong>55</strong><span>取件订单</span></div>
+      </div>
+    </header>
+
+    <section class="sim-shell shell" aria-labelledby="sim-title">
+      <div class="section-heading">
+        <div>
+          <p class="kicker">LIVE REPLAY / 实际轨迹驱动</p>
+          <h2 id="sim-title">交互式调度回放</h2>
+        </div>
+        <div class="case-switch" role="group" aria-label="选择仿真场景">
+          <button data-case="truck">纯卡车</button>
+          <button data-case="normal">常规风况</button>
+          <button data-case="gust" class="active">突发强风</button>
+          <button data-case="gust_milp">滚动规划</button>
+        </div>
+      </div>
+
+      <div class="sim-grid">
+        <div class="map-card">
+          <canvas id="map-canvas" aria-label="深圳大学粤海校区周边三维建筑、道路与车机轨迹仿真"></canvas>
+          <div class="map-topline">
+            <span class="live-tag"><i></i> SIMULATION</span>
+            <div class="view-tools">
+              <button id="view-reset" type="button">全景</button>
+              <button id="view-follow" type="button" aria-pressed="false">跟随卡车</button>
+              <span id="sim-clock">00:00:00</span>
+            </div>
+          </div>
+          <div class="legend">
+            <span><i class="truck-dot"></i>卡车</span>
+            <span><i class="drone-dot"></i>无人机</span>
+            <span><i class="order-dot"></i>待取件</span>
+            <span class="orbit-hint">拖动旋转 · 滚轮缩放</span>
+          </div>
+          <div class="event-toast" id="event-toast" aria-live="polite">
+            <span>当前状态</span>
+            <strong>正在加载仿真数据…</strong>
+          </div>
+        </div>
+
+        <aside class="telemetry" aria-label="实时遥测">
+          <div class="telemetry-head">
+            <span>MISSION CONTROL</span>
+            <strong id="case-label">突发强风 · 逐站分配</strong>
+          </div>
+
+          <div class="metric-grid">
+            <article><span>剩余电量</span><strong id="battery-value">756.00</strong><small>Wh</small></article>
+            <article><span>20% 安全阈值</span><strong>151.20</strong><small>Wh</small></article>
+            <article><span>节点观测风速</span><strong id="wind-value">0.00</strong><small>m/s</small></article>
+            <article><span>来风方向</span><strong id="wind-direction">静风</strong></article>
+            <article><span>卡车里程</span><strong id="distance-value">0.00</strong><small>km</small></article>
+            <article><span>换电次数</span><strong id="swap-value">0</strong><small>次</small></article>
+          </div>
+
+          <div class="battery-panel">
+            <div class="battery-copy"><span>可规划使用电量</span><strong id="available-value">604.80 Wh</strong></div>
+            <div class="battery-track"><i id="battery-fill"></i><b id="reserve-mark"></b></div>
+            <p>额定容量 756 Wh。低于 151.2 Wh 时，卡车在当前节点更换电池后再重新规划。</p>
+          </div>
+
+          <div class="decision-panel">
+            <p class="mini-label">决策日志</p>
+            <strong id="decision-title">读取天气与车辆状态</strong>
+            <p id="decision-detail">规划器以实际剩余电量初始化，并在每个天气更新点重新筛选候选任务。</p>
+          </div>
+
+          <div class="controls">
+            <button id="play-button" class="play" aria-label="播放或暂停"><span>Ⅱ</span> 暂停</button>
+            <label>速度
+              <select id="speed-select">
+                <option value="60">60×</option>
+                <option value="180" selected>180×</option>
+                <option value="600">600×</option>
+              </select>
+            </label>
+          </div>
+        </aside>
+      </div>
+
+      <div class="timeline-row">
+        <span id="timeline-current">00:00</span>
+        <input id="timeline" type="range" min="0" max="1000" value="0" aria-label="仿真时间轴">
+        <span id="timeline-total">00:00</span>
+      </div>
+
+      <div class="story-jumps">
+        <button id="jump-weather"><span>事件 01</span><strong>逐节点天气重判</strong><small>跳转至首个强风观测</small></button>
+        <button id="jump-swap"><span>事件 02</span><strong>20% 阈值换电</strong><small>当前算例将显示实际换电记录</small></button>
+      </div>
+    </section>
+
+    <section class="results shell" aria-labelledby="results-title">
+      <div class="section-heading">
+        <div>
+          <p class="kicker">BENCHMARK / 同批 55 个订单</p>
+          <h2 id="results-title">四种策略，一套验证口径</h2>
+        </div>
+        <p class="section-note">数值来自当前工程重新运行生成的 <code>results/*.json</code>，并通过订单唯一服务、载重、时间、电量和回仓校验。</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>场景与方法</th><th>无人机取件</th><th>卡车里程</th><th>总作业时间</th><th>无人机耗电</th><th>地面接回</th><th>换电</th></tr></thead>
+          <tbody id="results-body"></tbody>
+        </table>
+      </div>
+      <div class="result-callout">
+        <p>强风场景下</p>
+        <strong id="comparison-copy">滚动规划将根据实际复算结果更新。</strong>
+      </div>
+    </section>
+
+    <section class="logic shell" aria-labelledby="logic-title">
+      <div class="logic-intro">
+        <p class="kicker">SAFETY LOGIC / 节点闭环</p>
+        <h2 id="logic-title">逐节点天气重判<br>与 20% 阈值换电</h2>
+      </div>
+      <div class="logic-flow">
+        <article><span>01</span><h3>节点观测</h3><p>卡车到达节点后读取实际电量，并观测东、东北、北、西北、西、西南、南、东南八个来风方向。</p></article>
+        <article><span>02</span><h3>风况分类</h3><p>0–8 m/s 采用常规风况，8–14 m/s 进入强风调度，达到 14 m/s 时仅派卡车。</p></article>
+        <article><span>03</span><h3>安全航程</h3><p>起飞前同时检查完整任务耗电和最坏地速下的距离上限，航段风速不超过 14 m/s。</p></article>
+        <article><span>04</span><h3>换电重规划</h3><p>电量降到 151.2 Wh 时更换为满电电池，随后再次观测天气并求解剩余任务。</p></article>
+      </div>
+      <div class="formula-strip">
+        <div><span>最坏风况安全距离</span><strong>d<sub>ij</sub> + d<sub>jk</sub> ≤ (v<sub>air</sub> − 14)t<sub>use</sub></strong></div>
+        <div><span>20% 电量阈值</span><strong>E<sub>safe</sub> = 0.2 × 756 = 151.2 Wh</strong></div>
+        <div><span>风速限制</span><strong>0 ≤ ‖w‖ ≤ 14 m/s</strong></div>
+      </div>
+    </section>
+
+    <section class="parameters shell" aria-labelledby="parameters-title">
+      <div class="section-heading">
+        <div>
+          <p class="kicker">SIMULATION PARAMETERS</p>
+          <h2 id="parameters-title">修订后的仿真参数</h2>
+        </div>
+        <p class="section-note">常规风况采用 0–8 m/s，完整环境覆盖 0–14 m/s 与八个来风方向。</p>
+      </div>
+      <div class="table-wrap">
+        <table class="parameter-table">
+          <thead><tr><th>参数</th><th>仿真值</th><th>参数</th><th>仿真值</th></tr></thead>
+          <tbody>
+            <tr><td>最大快递载重 Q<sub>max</sub></td><td>2 kg</td><td>电池额定容量 E<sub>max</sub></td><td>756 Wh</td></tr>
+            <tr><td>安全剩余电量比例</td><td>20%</td><td>可规划使用电量</td><td>604.8 Wh</td></tr>
+            <tr><td>空载每公里耗电</td><td>25 Wh/km</td><td>满载每公里耗电</td><td>50 Wh/km</td></tr>
+            <tr><td>巡航空速</td><td>16 m/s</td><td>环境风速范围</td><td>0–14 m/s</td></tr>
+            <tr><td>常规风况范围</td><td>0–8 m/s</td><td>取件服务时间</td><td>60 s</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="scope shell">
+      <div>
+        <p class="kicker">MODEL SCOPE</p>
+        <h2>真实地图，实验参数。</h2>
+      </div>
+      <p>道路与建筑轮廓来自 OpenStreetMap。当前实现使用八方向离散风场和节点级天气观测，风况在单个航段内保持不变。地面按平面处理，未模拟飞控姿态、连续湍流或真实空域许可。页面回放用于解释调度逻辑，不代表真实事故率。</p>
+    </section>
+
+    <footer class="shell">
+      <span>SZU YUEHAI COOPERATIVE PICKUP SIMULATION</span>
+      <span>DATASET SEED 1701 · 756 Wh / 20% SWAP THRESHOLD</span>
+    </footer>
+  </main>
+
+  <script src="app.js?v=20261110-wind8-battery20"></script>
+</body>
+</html>

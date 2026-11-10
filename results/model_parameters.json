@@ -1,0 +1,96 @@
+{
+  "zones": [
+    {
+      "name": "A",
+      "road_leg_km": 5.8,
+      "road_detour_km": 2.6,
+      "air_distance_km": 2.0,
+      "demand_kg": 2.2,
+      "priority": 1.0,
+      "x_km": 12.0,
+      "y_km": 18.0
+    },
+    {
+      "name": "B",
+      "road_leg_km": 6.4,
+      "road_detour_km": 3.1,
+      "air_distance_km": 2.8,
+      "demand_kg": 3.7,
+      "priority": 0.95,
+      "x_km": 25.0,
+      "y_km": 27.0
+    },
+    {
+      "name": "C",
+      "road_leg_km": 5.1,
+      "road_detour_km": 2.3,
+      "air_distance_km": 1.7,
+      "demand_kg": 1.8,
+      "priority": 0.85,
+      "x_km": 38.0,
+      "y_km": 17.0
+    },
+    {
+      "name": "D",
+      "road_leg_km": 7.0,
+      "road_detour_km": 3.6,
+      "air_distance_km": 3.4,
+      "demand_kg": 4.1,
+      "priority": 1.2,
+      "x_km": 51.0,
+      "y_km": 36.0
+    },
+    {
+      "name": "E",
+      "road_leg_km": 6.0,
+      "road_detour_km": 2.8,
+      "air_distance_km": 2.5,
+      "demand_kg": 2.8,
+      "priority": 1.05,
+      "x_km": 65.0,
+      "y_km": 29.0
+    },
+    {
+      "name": "F",
+      "road_leg_km": 5.5,
+      "road_detour_km": 2.4,
+      "air_distance_km": 1.9,
+      "demand_kg": 1.6,
+      "priority": 0.75,
+      "x_km": 76.0,
+      "y_km": 43.0
+    },
+    {
+      "name": "G",
+      "road_leg_km": 6.8,
+      "road_detour_km": 3.3,
+      "air_distance_km": 3.0,
+      "demand_kg": 3.9,
+      "priority": 1.1,
+      "x_km": 88.0,
+      "y_km": 33.0
+    },
+    {
+      "name": "H",
+      "road_leg_km": 5.9,
+      "road_detour_km": 2.5,
+      "air_distance_km": 2.2,
+      "demand_kg": 2.4,
+      "priority": 0.9,
+      "x_km": 95.0,
+      "y_km": 49.0
+    }
+  ],
+  "prior": {
+    "calm": 0.52,
+    "moderate": 0.3,
+    "strong": 0.18
+  },
+  "query_budget": 3,
+  "query_time_min": 2.0,
+  "drone_max_wind_mps": 8.0,
+  "failure_penalty_min": 18.0,
+  "failure_risk_cost": 12.0,
+  "scenarios": 500,
+  "base_seed": 20261011
+}

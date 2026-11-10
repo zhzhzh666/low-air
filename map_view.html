@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>低空物流系统地图版仿真</title></head>
+<body style="margin:0;background:#061827"><div id="low-altitude-map-app" aria-label="低空物流系统地图版仿真">
+  <style>
+    #low-altitude-map-app { font-family: system-ui, -apple-system, "Microsoft YaHei", sans-serif; color:#e8f1f5; background:#081f32; padding:18px; border-radius:14px; max-width:1100px; margin:0 auto; }
+    #low-altitude-map-app .head { display:flex; justify-content:space-between; align-items:end; gap:16px; flex-wrap:wrap; margin-bottom:10px; }
+    #low-altitude-map-app h1 { font-size:24px; margin:0; font-weight:600; }
+    #low-altitude-map-app .sub { color:#9bb2c1; font-size:13px; margin-top:4px; }
+    #low-altitude-map-app .controls { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+    #low-altitude-map-app select { background:#123b54; color:#f2f7f8; border:1px solid #2e647b; border-radius:6px; padding:7px 10px; font-size:14px; }
+    #low-altitude-map-app .map-wrap { border-top:1px solid #244b60; padding-top:12px; }
+    #low-altitude-map-app svg { width:100%; height:auto; display:block; background:#0a2a40; border-radius:10px; }
+    #low-altitude-map-app .road { fill:none; stroke:#86a5b6; stroke-width:1.2; stroke-dasharray:2 2; opacity:.9; }
+    #low-altitude-map-app .drone { fill:none; stroke:#37c7d8; stroke-width:1.1; stroke-dasharray:3 2; opacity:.95; }
+    #low-altitude-map-app .zone-label { fill:#f4f9fb; font-size:3.6px; font-weight:600; text-anchor:middle; dominant-baseline:middle; }
+    #low-altitude-map-app .weather-label { fill:#b9cbd4; font-size:2.5px; text-anchor:middle; }
+    #low-altitude-map-app .hub { fill:#9bb2c1; opacity:.75; }
+    #low-altitude-map-app .query-ring { fill:none; stroke:#f4a340; stroke-width:1.1; }
+    #low-altitude-map-app .legend { display:flex; flex-wrap:wrap; gap:14px; padding:8px 0 0; color:#b9cbd4; font-size:13px; }
+    #low-altitude-map-app .dot { display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:5px; vertical-align:-1px; }
+    #low-altitude-map-app .status { color:#d9e9ef; font-size:14px; margin-top:8px; }
+    #low-altitude-map-app .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+  </style>
+  <div class="head">
+    <div><h1>低空物流系统地图版仿真</h1><div class="sub">示意坐标单位：km；用于比较调度路径，不代表真实经纬度</div></div>
+    <div class="controls"><label for="policy-select">策略</label><select id="policy-select" aria-label="选择仿真策略"></select></div>
+  </div>
+  <div class="map-wrap"><svg id="map-svg" viewBox="0 0 100 60" role="img" aria-labelledby="map-title map-desc"><title id="map-title">低空物流车辆协同路线地图</title><desc id="map-desc">显示卡车道路路线、无人机架次、区域风况和被查询区域。</desc></svg></div>
+  <div class="legend"><span><i class="dot" style="background:#42c5d6"></i>平静风</span><span><i class="dot" style="background:#f4a340"></i>中等风</span><span><i class="dot" style="background:#ee6b5f"></i>强风</span><span>实线：卡车路线</span><span>虚线：无人机架次</span><span style="color:#f4a340">圆环：天气查询</span></div>
+  <div id="map-status" class="status" aria-live="polite"></div>
+  <script>
+  (() => {
+    const DATA = {"params":{"zones":[{"name":"A","road_leg_km":5.8,"road_detour_km":2.6,"air_distance_km":2.0,"demand_kg":2.2,"priority":1.0,"x_km":12.0,"y_km":18.0},{"name":"B","road_leg_km":6.4,"road_detour_km":3.1,"air_distance_km":2.8,"demand_kg":3.7,"priority":0.95,"x_km":25.0,"y_km":27.0},{"name":"C","road_leg_km":5.1,"road_detour_km":2.3,"air_distance_km":1.7,"demand_kg":1.8,"priority":0.85,"x_km":38.0,"y_km":17.0},{"name":"D","road_leg_km":7.0,"road_detour_km":3.6,"air_distance_km":3.4,"demand_kg":4.1,"priority":1.2,"x_km":51.0,"y_km":36.0},{"name":"E","road_leg_km":6.0,"road_detour_km":2.8,"air_distance_km":2.5,"demand_kg":2.8,"priority":1.05,"x_km":65.0,"y_km":29.0},{"name":"F","road_leg_km":5.5,"road_detour_km":2.4,"air_distance_km":1.9,"demand_kg":1.6,"priority":0.75,"x_km":76.0,"y_km":43.0},{"name":"G","road_leg_km":6.8,"road_detour_km":3.3,"air_distance_km":3.0,"demand_kg":3.9,"priority":1.1,"x_km":88.0,"y_km":33.0},{"name":"H","road_leg_km":5.9,"road_detour_km":2.5,"air_distance_km":2.2,"demand_kg":2.4,"priority":0.9,"x_km":95.0,"y_km":49.0}],"prior":{"calm":0.52,"moderate":0.3,"strong":0.18},"query_budget":3,"query_time_min":2.0,"drone_max_wind_mps":8.0,"failure_penalty_min":18.0,"failure_risk_cost":12.0,"scenarios":500,"base_seed":20261011},"traces":{"none":{"weather_and_actions":[{"zone":"A","weather_real":"calm","query":false,"posterior_safe":0.82,"voi_min":2.304,"action":"truck","stage_time_min":20.8,"safe":true},{"zone":"B","weather_real":"calm","query":false,"posterior_safe":0.82,"voi_min":2.018,"action":"truck","stage_time_min":23.0,"safe":true},{"zone":"C","weather_real":"calm","query":false,"posterior_safe":0.82,"voi_min":2.05,"action":"truck","stage_time_min":18.8,"safe":true},{"zone":"D","weather_real":"calm","query":false,"posterior_safe":0.82,"voi_min":2.333,"action":"truck","stage_time_min":25.2,"safe":true},{"zone":"E","weather_real":"moderate","query":false,"posterior_safe":0.82,"voi_min":2.344,"action":"truck","stage_time_min":21.6,"safe":true},{"zone":"F","weather_real":"moderate","query":false,"posterior_safe":0.82,"voi_min":1.782,"action":"truck","stage_time_min":19.8,"safe":true},{"zone":"G","weather_real":"moderate","query":false,"posterior_safe":0.82,"voi_min":2.257,"action":"truck","stage_time_min":24.2,"safe":true},{"zone":"H","weather_real":"calm","query":false,"posterior_safe":0.82,"voi_min":2.106,"action":"truck","stage_time_min":20.8,"safe":true}],"summary":{"policy":"none","scenarios":500,"mean_completion_time_min":174.2,"p95_completion_time_min":174.2,"mean_total_cost":174.2,"mean_drone_share":0.0,"mean_queries":0,"mean_failures":0,"failure_rate":0.0}},"blind_aggressive":{"weather_and_actions":[{"zone":"A","weather_real":"calm","query":false,"posterior_safe":0.82,"voi_min":2.304,"action":"drone","stage_time_min":11.6,"safe":true},{"zone":"B","weather_real":"calm","query":false,"posterior_safe":0.82,"voi_min":2.018,"action":"drone","stage_time_min":12.8,"safe":true},{"zone":"C","weather_real":"calm","query":false,"posterior_safe":0.82,"voi_min":2.05,"action":"drone","stage_time_min":10.2,"safe":true},{"zone":"D","weather_real":"calm","query":false,"posterior_safe":0.82,"voi_min":2.333,"action":"drone","stage_time_min":14.0,"safe":true},{"zone":"E","weather_real":"moderate","query":false,"posterior_safe":0.82,"voi_min":2.344,"action":"drone","stage_time_min":12.0,"safe":true},{"zone":"F","weather_real":"moderate","query":false,"posterior_safe":0.82,"voi_min":1.782,"action":"drone","stage_time_min":11.0,"safe":true},{"zone":"G","weather_real":"moderate","query":false,"posterior_safe":0.82,"voi_min":2.257,"action":"drone","stage_time_min":13.6,"safe":true},{"zone":"H","weather_real":"calm","query":false,"posterior_safe":0.82,"voi_min":2.106,"action":"drone","stage_time_min":11.8,"safe":true}],"summary":{"policy":"blind_aggressive","scenarios":500,"mean_completion_time_min":128.108,"p95_completion_time_min":163.0,"mean_total_cost":145.076,"mean_drone_share":1.0,"mean_queries":0,"mean_failures":1.414,"failure_rate":0.1767}},"random":{"weather_and_actions":[{"zone":"A","weather_real":"calm","query":false,"posterior_safe":0.82,"voi_min":2.304,"action":"truck","stage_time_min":20.8,"safe":true},{"zone":"B","weather_real":"calm","query":false,"posterior_safe":0.82,"voi_min":2.018,"action":"truck","stage_time_min":23.0,"safe":true},{"zone":"C","weather_real":"calm","query":false,"posterior_safe":0.82,"voi_min":2.05,"action":"truck","stage_time_min":18.8,"safe":true},{"zone":"D","weather_real":"calm","query":false,"posterior_safe":0.82,"voi_min":2.333,"action":"truck","stage_time_min":25.2,"safe":true},{"zone":"E","weather_real":"moderate","query":true,"posterior_safe":1.0,"voi_min":0.0,"action":"drone","stage_time_min":12.0,"safe":true},{"zone":"F","weather_real":"moderate","query":true,"posterior_safe":1.0,"voi_min":0.0,"action":"drone","stage_time_min":11.0,"safe":true},{"zone":"G","weather_real":"moderate","query":false,"posterior_safe":0.82,"voi_min":2.257,"action":"truck","stage_time_min":24.2,"safe":true},{"zone":"H","weather_real":"calm","query":false,"posterior_safe":0.82,"voi_min":2.106,"action":"truck","stage_time_min":20.8,"safe":true}],"summary":{"policy":"random","scenarios":500,"mean_completion_time_min":161.95,"p95_completion_time_min":176.2,"mean_total_cost":161.95,"mean_drone_share":0.211,"mean_queries":2.022,"mean_failures":0,"failure_rate":0.0}},"active":{"weather_and_actions":[{"zone":"A","weather_real":"calm","query":true,"posterior_safe":1.0,"voi_min":0.0,"action":"drone","stage_time_min":11.6,"safe":true},{"zone":"B","weather_real":"calm","query":false,"posterior_safe":0.82,"voi_min":2.018,"action":"truck","stage_time_min":23.0,"safe":true},{"zone":"C","weather_real":"calm","query":false,"posterior_safe":0.82,"voi_min":2.05,"action":"truck","stage_time_min":18.8,"safe":true},{"zone":"D","weather_real":"calm","query":true,"posterior_safe":1.0,"voi_min":0.0,"action":"drone","stage_time_min":14.0,"safe":true},{"zone":"E","weather_real":"moderate","query":true,"posterior_safe":1.0,"voi_min":0.0,"action":"drone","stage_time_min":12.0,"safe":true},{"zone":"F","weather_real":"moderate","query":false,"posterior_safe":0.82,"voi_min":1.782,"action":"truck","stage_time_min":19.8,"safe":true},{"zone":"G","weather_real":"moderate","query":false,"posterior_safe":0.82,"voi_min":2.257,"action":"truck","stage_time_min":24.2,"safe":true},{"zone":"H","weather_real":"calm","query":false,"posterior_safe":0.82,"voi_min":2.106,"action":"truck","stage_time_min":20.8,"safe":true}],"summary":{"policy":"active","scenarios":500,"mean_completion_time_min":155.673,"p95_completion_time_min":170.6,"mean_total_cost":155.673,"mean_drone_share":0.306,"mean_queries":3,"mean_failures":0,"failure_rate":0.0}},"all_query":{"weather_and_actions":[{"zone":"A","weather_real":"calm","query":true,"posterior_safe":1.0,"voi_min":0.0,"action":"drone","stage_time_min":11.6,"safe":true},{"zone":"B","weather_real":"calm","query":true,"posterior_safe":1.0,"voi_min":0.0,"action":"drone","stage_time_min":12.8,"safe":true},{"zone":"C","weather_real":"calm","query":true,"posterior_safe":1.0,"voi_min":0.0,"action":"drone","stage_time_min":10.2,"safe":true},{"zone":"D","weather_real":"calm","query":true,"posterior_safe":0.82,"voi_min":2.333,"action":"truck","stage_time_min":25.2,"safe":true},{"zone":"E","weather_real":"moderate","query":true,"posterior_safe":0.82,"voi_min":2.344,"action":"truck","stage_time_min":21.6,"safe":true},{"zone":"F","weather_real":"moderate","query":true,"posterior_safe":0.82,"voi_min":1.782,"action":"truck","stage_time_min":19.8,"safe":true},{"zone":"G","weather_real":"moderate","query":true,"posterior_safe":0.82,"voi_min":2.257,"action":"truck","stage_time_min":24.2,"safe":true},{"zone":"H","weather_real":"calm","query":true,"posterior_safe":0.82,"voi_min":2.106,"action":"truck","stage_time_min":20.8,"safe":true}],"summary":{"policy":"all_query","scenarios":500,"mean_completion_time_min":157.078,"p95_completion_time_min":171.0,"mean_total_cost":157.078,"mean_drone_share":0.309,"mean_queries":3,"mean_failures":0,"failure_rate":0.0}},"oracle":{"weather_and_actions":[{"zone":"A","weather_real":"calm","query":false,"posterior_safe":1.0,"voi_min":0.0,"action":"drone","stage_time_min":11.6,"safe":true},{"zone":"B","weather_real":"calm","query":false,"posterior_safe":1.0,"voi_min":0.0,"action":"drone","stage_time_min":12.8,"safe":true},{"zone":"C","weather_real":"calm","query":false,"posterior_safe":1.0,"voi_min":0.0,"action":"drone","stage_time_min":10.2,"safe":true},{"zone":"D","weather_real":"calm","query":false,"posterior_safe":1.0,"voi_min":0.0,"action":"drone","stage_time_min":14.0,"safe":true},{"zone":"E","weather_real":"moderate","query":false,"posterior_safe":1.0,"voi_min":0.0,"action":"drone","stage_time_min":12.0,"safe":true},{"zone":"F","weather_real":"moderate","query":false,"posterior_safe":1.0,"voi_min":0.0,"action":"drone","stage_time_min":11.0,"safe":true},{"zone":"G","weather_real":"moderate","query":false,"posterior_safe":1.0,"voi_min":0.0,"action":"drone","stage_time_min":13.6,"safe":true},{"zone":"H","weather_real":"calm","query":false,"posterior_safe":1.0,"voi_min":0.0,"action":"drone","stage_time_min":11.8,"safe":true}],"summary":{"policy":"oracle","scenarios":500,"mean_completion_time_min":110.61,"p95_completion_time_min":129.0,"mean_total_cost":110.61,"mean_drone_share":0.823,"mean_queries":0,"mean_failures":0,"failure_rate":0.0}}},"summary":[{"policy":"none","mean_time":174.2,"drone_share":0.0,"queries":0.0,"failures":0.0},{"policy":"blind_aggressive","mean_time":128.108,"drone_share":1.0,"queries":0.0,"failures":1.414},{"policy":"random","mean_time":161.95,"drone_share":0.211,"queries":2.022,"failures":0.0},{"policy":"active","mean_time":155.673,"drone_share":0.306,"queries":3.0,"failures":0.0},{"policy":"all_query","mean_time":157.078,"drone_share":0.309,"queries":3.0,"failures":0.0},{"policy":"oracle","mean_time":110.61,"drone_share":0.823,"queries":0.0,"failures":0.0}]};
+    const svg = document.getElementById('map-svg');
+    const select = document.getElementById('policy-select');
+    const status = document.getElementById('map-status');
+    const zones = DATA.params.zones;
+    const zoneByName = Object.fromEntries(zones.map(z => [z.name, z]));
+    const route = zones.map(z => z.name);
+    const depot = { name:'仓', x_km:6, y_km:54 };
+    const colors = { calm: '#42c5d6', moderate: '#f4a340', strong: '#ee6b5f' };
+    const names = { none: '保守不查询', blind_aggressive: '盲目飞行', random: '随机查询', active: '主动 VOI', all_query: '顺序查询', oracle: '天气全知' };
+    Object.keys(names).forEach(p => { const o = document.createElement('option'); o.value = p; o.textContent = names[p]; select.appendChild(o); });
+    select.value = 'active';
+    const NS = 'http://www.w3.org/2000/svg';
+    function el(tag, attrs) { const node = document.createElementNS(NS, tag); Object.entries(attrs || {}).forEach(([k,v]) => node.setAttribute(k, v)); return node; }
+    function render(policy) {
+      while (svg.lastChild) svg.removeChild(svg.lastChild);
+      const title = el('title', { id:'map-title' }); title.textContent = '低空物流车辆协同路线地图'; svg.appendChild(title);
+      const desc = el('desc', { id:'map-desc' }); desc.textContent = '显示卡车道路路线、无人机架次、区域风况和被查询区域。'; svg.appendChild(desc);
+      const trace = DATA.traces[policy].weather_and_actions;
+      const lookup = Object.fromEntries(trace.map(r => [r.zone, r]));
+      const routePoints = [depot, ...route.map(n => zoneByName[n])];
+      svg.appendChild(el('polyline', { class:'road', points:routePoints.map(z => `${z.x_km},${60-z.y_km}`).join(' ') }));
+      svg.appendChild(el('circle', { class:'hub', cx:depot.x_km, cy:60-depot.y_km, r:'1.5' }));
+      const depotLabel = el('text', { class:'weather-label', x:depot.x_km, y:60-depot.y_km-3 }); depotLabel.textContent='仓'; svg.appendChild(depotLabel);
+      routePoints.forEach((z, i) => {
+        const next = routePoints[i+1];
+        const rec = lookup[z.name];
+        if (rec && rec.action === 'drone' && next) {
+          const x1=z.x_km, y1=60-z.y_km, x2=(z.x_km+next.x_km)/2, y2=(60-z.y_km + 60-next.y_km)/2;
+          svg.appendChild(el('path', { class:'drone', d:`M ${x1} ${y1} Q ${(x1+x2)/2} ${(y1+y2)/2-6} ${x2} ${y2}` }));
+          svg.appendChild(el('circle', { class:'hub', cx:x2, cy:y2, r:'.7' }));
+        }
+      });
+      routePoints.slice(1).forEach(z => {
+        const rec = lookup[z.name] || { weather_real:'calm', query:false, action:'truck' };
+        const g = el('g', { 'aria-label':`${z.name} 区域，${rec.weather_real}，${rec.action}` });
+        if (rec.query) g.appendChild(el('circle', { class:'query-ring', cx:z.x_km, cy:60-z.y_km, r:'4.4' }));
+        g.appendChild(el('circle', { cx:z.x_km, cy:60-z.y_km, r:'3.1', fill:colors[rec.weather_real] || '#9bb2c1', stroke:'#081f32', 'stroke-width':'.5' }));
+        const label = el('text', { class:'zone-label', x:z.x_km, y:60-z.y_km }); label.textContent=z.name; g.appendChild(label);
+        const w = el('text', { class:'weather-label', x:z.x_km, y:60-z.y_km+6 }); w.textContent=rec.action === 'drone' ? '无人机' : '卡车'; g.appendChild(w);
+        svg.appendChild(g);
+      });
+      const selected = DATA.summary.find(x => x.policy === policy);
+      status.textContent = `${names[policy]}：平均完成时间 ${selected.mean_time.toFixed(1)} 分钟，查询 ${selected.queries} 次，无人机占比 ${(selected.drone_share*100).toFixed(1)}%，平均失败 ${selected.failures.toFixed(2)} 架次`;
+    }
+    select.addEventListener('change', () => render(select.value));
+    render(select.value);
+  })();
+  </script>
+</div></body>
+</html>

@@ -1,0 +1,11 @@
+{
+  "rows": 6480,
+  "main_rows": 2160,
+  "unique_simulations": 2700,
+  "seeds_per_main_cell": 30,
+  "required_metrics_finite": true,
+  "paired_orders_and_weather": true,
+  "query_budget_respected": true,
+  "incomplete_design_rows": 3,
+  "incomplete_unique_episodes": 3
+}

@@ -1,0 +1,71 @@
+{
+  "summary": [
+    {
+      "policy": "none",
+      "scenarios": 500,
+      "mean_completion_time_min": 174.2,
+      "p95_completion_time_min": 174.2,
+      "mean_total_cost": 174.2,
+      "mean_drone_share": 0.0,
+      "mean_queries": 0,
+      "mean_failures": 0,
+      "failure_rate": 0.0
+    },
+    {
+      "policy": "blind_aggressive",
+      "scenarios": 500,
+      "mean_completion_time_min": 128.108,
+      "p95_completion_time_min": 163.0,
+      "mean_total_cost": 145.076,
+      "mean_drone_share": 1.0,
+      "mean_queries": 0,
+      "mean_failures": 1.414,
+      "failure_rate": 0.1767
+    },
+    {
+      "policy": "random",
+      "scenarios": 500,
+      "mean_completion_time_min": 161.95,
+      "p95_completion_time_min": 176.2,
+      "mean_total_cost": 161.95,
+      "mean_drone_share": 0.211,
+      "mean_queries": 2.022,
+      "mean_failures": 0,
+      "failure_rate": 0.0
+    },
+    {
+      "policy": "active",
+      "scenarios": 500,
+      "mean_completion_time_min": 155.673,
+      "p95_completion_time_min": 170.6,
+      "mean_total_cost": 155.673,
+      "mean_drone_share": 0.306,
+      "mean_queries": 3,
+      "mean_failures": 0,
+      "failure_rate": 0.0
+    },
+    {
+      "policy": "all_query",
+      "scenarios": 500,
+      "mean_completion_time_min": 157.078,
+      "p95_completion_time_min": 171.0,
+      "mean_total_cost": 157.078,
+      "mean_drone_share": 0.309,
+      "mean_queries": 3,
+      "mean_failures": 0,
+      "failure_rate": 0.0
+    },
+    {
+      "policy": "oracle",
+      "scenarios": 500,
+      "mean_completion_time_min": 110.61,
+      "p95_completion_time_min": 129.0,
+      "mean_total_cost": 110.61,
+      "mean_drone_share": 0.823,
+      "mean_queries": 0,
+      "mean_failures": 0,
+      "failure_rate": 0.0
+    }
+  ],
+  "output": "C:\\Users\\zh\\Desktop\\git\\低空物流系统\\results"
+}
